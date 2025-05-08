@@ -22,14 +22,14 @@ export class MainComponent {
     ngOnInit() {
         this.changeService.getChanges().subscribe((changes) => {
             this.changes = changes;
-            console.log(changes);
+        });
+        this.routeService.optimizeMock().subscribe((response) => {
+            this.transports = response.transportPlan.transports;
         });
     }
 
     onClick() {
-        console.log("optimisation triggered")
-        this.routeService.optimizeRoute().subscribe((response) => {
-            console.log(response);
-        });
+        console.log(this.changes);
+        console.log(this.transports);
     }
 }

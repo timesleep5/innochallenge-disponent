@@ -14,10 +14,14 @@ export class RouteService {
     }
 
     public optimizeRoute(): Observable<OptimizeResponse> {
-        return this.connectorService.optimizeCall(
+        return this.connectorService.add(
             "optimize",
             {'optimizationGoal': 'TRAVEL_DISTANCE', 'optimizationAlgorithm': 'SIMPLE_GREEDY_VRP_OPTIMIZER'}
         );
+    }
+
+    public optimizeMock(): Observable<OptimizeResponse> {
+        return this.connectorService.optimizeMock();
     }
 
     public getSth(): Observable<any> {
