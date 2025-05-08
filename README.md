@@ -3,7 +3,7 @@
 ## important links
 
 ### API URL
-[General](optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1(
+[General](optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1)
 
 #### Trucks
 [optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/trucks](optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/trucks)
