@@ -1,0 +1,46 @@
+.container {
+    min-width: 90vw;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.circle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 20vw;
+}
+
+.blink {
+    animation: blink var(--animation-duration) infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        background-color: rgba(210, 34, 34, 0.55);
+        box-shadow: 0 0 20px rgb(210, 34, 34);
+    }
+    50% {
+        background-color: rgba(176, 10, 10, 0);
+        box-shadow: 0 0 10px rgba(210, 34, 34, 0);
+    }
+}
+
+#content {
+    flex-direction: row;
+    margin: 0;
+}
+
+#signifier {
+    background: none;
+    font-weight: bold;
+}
+

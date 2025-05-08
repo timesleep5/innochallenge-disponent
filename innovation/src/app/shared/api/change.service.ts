@@ -10,6 +10,6 @@ export class ChangeService {
     }
 
     public getChanges(): Observable<any> {
-        return of(5);
+        return of(12);
     }
 }
