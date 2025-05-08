@@ -60,6 +60,14 @@
 
 #### Locations
 [https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/locations](https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/locations)
+```json
+{
+"locationId": "89",
+"isHomeBase": false,
+"isExchangeSpot": false,
+"isDestination": true
+}
+```
 
 #### Location-Addresses
 [https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/location-addresses](https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/location-addresses)
