@@ -1,8 +1,6 @@
-a {
-    padding: 10px;
-    margin-left: 20px;
-
-    border-radius: 2px;
+svg {
+    position: absolute;
+    right: 50px;
 }
 
 .flex-container {
@@ -11,12 +9,28 @@ a {
 
 #spacer {
     padding: 10px 0 10px 0;
-
     background-color: var(--overlay);
-
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+
+
+img {
+    width: 80px;
+}
+
+
+nav a {
+    padding: 10px 10px 10px 10px;
+    display:inline-block;
+    height: 20px;
+    width: 80px;
+    margin-left: 10px;
+    border-radius: 2px;
+    text-align: center;
+    justify-content: center;
 }
 
 #dark-toggle {

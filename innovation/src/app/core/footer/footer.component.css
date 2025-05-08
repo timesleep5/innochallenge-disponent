@@ -1,0 +1,44 @@
+#spacer {
+    padding: 10px 0 10px 10px;
+
+    background-color: var(--overlay);
+
+}
+
+p {
+    text-align: center;
+    padding: 10px 5px 10px 10px;
+    background-color: var(--overlay);
+}
+
+
+.bottom-nav {
+    position: relative;
+    overflow: hidden;
+}
+
+.bottom-nav a{
+    float: left;
+    text-align: center;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.bottom-nav-centered a {
+    float: none;
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bottom-nav-right {
+    padding-right: 30%;
+    float: right;
+}
+
+.bottom-nav-left {
+    padding-left: 30%;
+    float: left;
+}
