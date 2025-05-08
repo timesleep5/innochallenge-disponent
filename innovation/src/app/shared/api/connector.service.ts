@@ -6,17 +6,18 @@ import {Observable} from 'rxjs';
     providedIn: 'root'
 })
 export class ConnectorService {
-    private url = 'http://127.0.0.1:8000/'
+    private url = 'https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/' + 'api/v1/';
 
     constructor(
         private http: HttpClient
     ) {
     }
 
-    add(suffix: string, body: any): Observable<any> {
+    optimizeCall(suffix: string, body: any): Observable<any> {
         return this.http.post(
-            `${this.url}${suffix}`, body,
-            {headers: this.buildSendHeader()}
+            'https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/optimize',
+            {'optimizationGoal': 'TRAVEL_DISTANCE', 'optimizationAlgorithm': 'SIMPLE_GREEDY_VRP_OPTIMIZER'},
+            {headers: new HttpHeaders().set('accept', '*/*').set('Content-Type', 'application/json')}
         );
     }
 
