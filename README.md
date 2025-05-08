@@ -13,6 +13,21 @@
 
 #### Drivers (anonymized)
 [https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/truck-drivers](https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/truck-drivers)
+```json
+{
+"driverId": "D01",
+"firstName": "Noah",
+"lastName": "Müller",
+"mnemonic": "NOMÜ",
+"craneLicenseOwner": true,
+"forkliftLicenseOwner": true,
+"longTruckLicenseOwner": true,
+"eurotrailerLicenseOwner": true,
+"adrLicenseOwner": true,
+"currentLocation": "1000001",
+"homeBase": "1000001"
+},
+```
 
 
 #### Locations
