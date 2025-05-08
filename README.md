@@ -84,6 +84,13 @@
 
 #### Location-Coordinates
 [https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/location-coordinates](https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/location-coordinates)
+```json
+{
+"locationId": "89",
+"latitude": 48.7131518,
+"longitude": 9.0000948
+}
+```
 
 #### Location Opening Times (probably not required)
 [https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/location-opening-times](https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/location-opening-times)
