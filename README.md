@@ -105,3 +105,7 @@
 "closingTime": "21:30:00"
 }
 ```
+
+
+#### Delivered Goods -> not relevant for usecase but maybe for presentation / FE
+[https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/delivery-requests](https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/delivery-requests)
