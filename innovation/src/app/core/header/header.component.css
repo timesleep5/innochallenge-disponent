@@ -1,0 +1,36 @@
+a {
+    padding: 10px;
+    margin-left: 20px;
+
+    border-radius: 2px;
+}
+
+.flex-container {
+    align-items: flex-start;
+}
+
+#spacer {
+    padding: 10px 0 10px 0;
+
+    background-color: var(--overlay);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#dark-toggle {
+    margin-right: 4vw;
+    padding: 8px;
+
+    height: 24px;
+    width: 24px;
+
+    border-radius: 50%;
+    fill: var(--text-color);
+    background-color: var(--overlay);
+}
+
+#dark-toggle:hover {
+    background-color: var(--overlay-dark);
+}
