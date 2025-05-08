@@ -94,3 +94,14 @@
 
 #### Location Opening Times (probably not required)
 [https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/location-opening-times](https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/location-opening-times)
+```json
+{
+"openingTimeId": {
+"locationId": "89",
+"operationalFunction": "DESTINATION",
+"dayOfWeek": "MONDAY"
+},
+"openingTime": "05:30:00",
+"closingTime": "21:30:00"
+}
+```
