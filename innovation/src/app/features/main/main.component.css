@@ -1,3 +1,19 @@
+select {
+    font-size: 16px;
+    border: solid 2px rgba(68, 68, 68, 0.2);
+    border-radius: 4px;
+    padding: 0 5px 0 5px;
+    box-shadow: none;
+}
+
+label {
+    margin-right: 5px;
+}
+
+button {
+    font-size: 16px;
+}
+
 .container {
     min-width: 90vw;
     align-items: center;
@@ -9,6 +25,14 @@
     margin-bottom: 40px;
 }
 
+.vertical-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
 .circle-container {
     display: flex;
     align-items: center;
@@ -16,7 +40,6 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    margin-right: 20vw;
 }
 
 .blink {
@@ -44,3 +67,6 @@
     font-weight: bold;
 }
 
+#space {
+    width: 20vw;
+}

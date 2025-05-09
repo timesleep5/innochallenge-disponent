@@ -1,13 +1,33 @@
 <div class="container">
     <h1>Welcome to the Route Optimization App!</h1>
 </div>
-<div class="container">
-    <div class="container" id="content">
 
-        Changes:
-        <div class="circle-container" [ngClass]="{'blink': changes > 0}">
-            <p id="signifier">{{ changes }}</p>
+<div class="container">
+    <div class="container vertical-container">
+        <div class="vertical-container">
+            <label for="driverSelect">Select a Driver: </label>
+            <select [(ngModel)]="selectedTruckDriver" id="driverSelect">
+                <option *ngFor="let driver of truckDrivers" [ngValue]="driver">
+                    {{ driver.firstName }} {{ driver.lastName }}
+                </option>
+            </select>
         </div>
+
+        <div id="space"></div>
+
+        <div class="vertical-container">
+            Changes:
+            <div [ngClass]="{'blink': changes > 0}" class="circle-container">
+                <p id="signifier">{{ changes }}</p>
+            </div>
+        </div>
+
+        <div id="space"></div>
+
         <button (click)="onClick()">Start Route Optimization</button>
     </div>
+</div>
+
+<div class="container">
+    Map
 </div>
