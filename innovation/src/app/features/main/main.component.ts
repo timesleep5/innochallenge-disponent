@@ -8,6 +8,7 @@ import {LocationAddress} from '../../shared/datatype/LocationAddress';
 
 import * as L from 'leaflet';
 import {MockApiService} from '../../shared/api/mock-api.service';
+import {HelperApiService} from '../../shared/api/helper-api.service';
 
 @Component({
     selector: 'app-main',
@@ -36,6 +37,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
 
     constructor(
         private mockService: MockApiService,
+        private helperApiService: HelperApiService
     ) {
     }
 
@@ -49,10 +51,14 @@ export class MainComponent implements OnDestroy, AfterViewInit {
             this.changes = changes;
         });
         this.mockService.optimizeRoute().subscribe((response) => {
-            this.transports = response.transportPlan.transports;
+            this.transports = response.transportPlan.transports.sort(
+                (a, b) => a.startDateTime.localeCompare(b.startDateTime)
+            );
         });
         this.mockService.getDrivers().subscribe((response) => {
-            this.truckDrivers = response;
+            this.truckDrivers = response.sort(
+                (a, b) => a.lastName.localeCompare(b.lastName)
+            );
         });
         this.mockService.getLocationAddress().subscribe((response) => {
             this.locationAddresses = response;
@@ -70,10 +76,35 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         this.initMap();
     }
 
+    private updateRoute() {
+        if (!this.transports) {
+            return;
+        }
+
+        this.helperApiService.getRoutsFromTrips(this.transports.map(transport => ({
+            startLocationId: Number(transport.startLocationId),
+            endLocationId: Number(transport.endLocationId)
+        }))).subscribe((response) => {
+            // @ts-ignore TODO check if ok
+            const route = L.geoJson(response, {
+                style: {color: 'blue', weight: 4}
+            }).addTo(this.map!);
+
+            this.map!.fitBounds(route.getBounds());
+        });
+    }
+
     protected onClick() {
         this.mockService.optimizeRoute().subscribe((response) => {
             this.transports = response.transportPlan.transports;
+
+            if (this.selectedTruckDriver) {
+                this.onSelectTruckDriver();
+            }
+
+            this.updateRoute();
         });
+
         this.changes = 0;
     }
 
@@ -82,6 +113,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         this.filteredTransport = this.transports.find(transport =>
             transport.driverId.includes(selectedDriverId)
         );
+
         this.filteredTransports = this.transports.filter(transport =>
             transport.driverId.includes(selectedDriverId));
 
@@ -92,6 +124,8 @@ export class MainComponent implements OnDestroy, AfterViewInit {
             this.endLocation = this.locationAddresses.find(location =>
                 location.locationId === this.filteredTransport!.endLocationId
             );
+
+            this.updateRoute();
         } else {
             this.startLocation = undefined;
             this.endLocation = undefined;
@@ -112,16 +146,6 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(this.map);
-
-        L.marker([52.5200, 13.4050])
-            .addTo(this.map)
-            .bindPopup('Berlin')
-            .openPopup();
-
-        L.marker([48.1351, 11.5820])
-            .addTo(this.map)
-            .bindPopup('Prime Munich')
-            .openPopup();
 
         const token = "5b3ce3597851110001cf62486a2a1595359f4e529edaaabd04ba2b0d";
         const url = 'https://api.openrouteservice.org/v2/directions/driving-hgv/geojson';

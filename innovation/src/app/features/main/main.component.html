@@ -8,7 +8,7 @@
             <label for="driverSelect">Select a Driver: </label>
             <select [(ngModel)]="selectedTruckDriver" id="driverSelect" (change)="onSelectTruckDriver()">
                 <option *ngFor="let driver of truckDrivers" [ngValue]="driver">
-                    {{ driver.firstName }} {{ driver.lastName }}
+                    {{ driver.lastName }}, {{ driver.firstName }}
                 </option>
             </select>
         </div>
