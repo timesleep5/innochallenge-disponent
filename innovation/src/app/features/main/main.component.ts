@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostBinding, OnDestroy} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {Transport} from '../../shared/datatype/Transport';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -206,7 +206,6 @@ export class MainComponent implements OnDestroy, AfterViewInit {
             </div>`;
 
         if (this.map) {
-            console.log(location)
             if (location) {
                 let marker = L.marker(coordinates, {icon: customIcon})
                 marker
