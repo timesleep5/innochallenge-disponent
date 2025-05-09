@@ -17,8 +17,8 @@ import {CapgeminiApiService} from '../../shared/api/capgemini-api.service';
 
 const customIcon = L.icon({
     iconUrl: '/location_on.png',
-    iconSize: [30, 30],
-    iconAnchor: [15, 40],
+    iconSize: [35, 35],
+    iconAnchor: [18, 35],
     popupAnchor: [0, -35]
 });
 
@@ -153,9 +153,10 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     }
 
     private plotRouteDetails(routeDetails: RouteVisualization): void {
+        let counter = 0;
         for (let pin of routeDetails.pins) {
-            console.log(pin.startLocationId)
-            this.initMarker(this.locationAddresses.find(location => Number(location.locationId) == pin.startLocationId), [pin.latitude, pin.longitude]);
+            counter++;
+            this.initMarker(this.locationAddresses.find(location => Number(location.locationId) == pin.startLocationId), [pin.latitude, pin.longitude], counter);
         }
 
         const route = L.geoJSON(routeDetails.route as GeoJSON.GeoJsonObject, {
@@ -193,10 +194,11 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         }
     }
 
-    private initMarker(location: LocationAddress | undefined, coordinates: L.LatLngExpression): void {
+    private initMarker(location: LocationAddress | undefined, coordinates: L.LatLngExpression, stopNr: number): void {
         let popupContent =
             `<div class="popup-content">
                 <h3>Location Details</h3>
+                <p><b>Stop Nr:</b> ${stopNr}</p>
                 <p><b>Country:</b> ${location?.country}</p>
                 <p><b>Area code:</b> ${location?.areaCode}</p>
                 <p><b>City:</b> ${location?.city}</p>
@@ -210,7 +212,6 @@ export class MainComponent implements OnDestroy, AfterViewInit {
                 marker
                     .addTo(this.map)
                     .bindPopup(popupContent)
-                    .openPopup()
 
                 this.markers.push(marker);
             } else {
