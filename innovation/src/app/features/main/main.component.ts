@@ -154,7 +154,8 @@ export class MainComponent implements OnDestroy, AfterViewInit {
 
     private plotRouteDetails(routeDetails: RouteVisualization): void {
         for (let pin of routeDetails.pins) {
-            this.initMarker(this.locationAddresses[pin.id], [pin.latitude, pin.longitude]);
+            console.log(pin.startLocationId)
+            this.initMarker(this.locationAddresses.find(location => Number(location.locationId) == pin.startLocationId), [pin.latitude, pin.longitude]);
         }
 
         const route = L.geoJSON(routeDetails.route as GeoJSON.GeoJsonObject, {
@@ -203,6 +204,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
             </div>`;
 
         if (this.map) {
+            console.log(location)
             if (location) {
                 let marker = L.marker(coordinates, {icon: customIcon})
                 marker

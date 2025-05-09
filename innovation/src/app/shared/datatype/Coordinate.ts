@@ -1,5 +1,5 @@
 export interface Coordinate {
-    "id": number,
+    "startLocationId": number,
     "longitude": number,
     "latitude": number
 }
