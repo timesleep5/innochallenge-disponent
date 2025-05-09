@@ -23,7 +23,7 @@ export class DriverService {
         return of(
             [
                 {
-                    "driverId": "D01",
+                    "driverId": "D10",
                     "firstName": "Noah",
                     "lastName": "Müller",
                     "mnemonic": "NOMÜ",
@@ -36,7 +36,7 @@ export class DriverService {
                     "homeBase": "1000001"
                 },
                 {
-                    "driverId": "D05",
+                    "driverId": "D20",
                     "firstName": "Lukas",
                     "lastName": "Kraftfahrer",
                     "mnemonic": "LUKR",
@@ -47,6 +47,19 @@ export class DriverService {
                     "adrLicenseOwner": false,
                     "currentLocation": "1000002",
                     "homeBase": "1000002"
+                },
+                {
+                    "driverId": "D00",
+                    "firstName": "Schaffi",
+                    "lastName": "Schaffnix",
+                    "mnemonic": "SCSC",
+                    "craneLicenseOwner": false,
+                    "forkliftLicenseOwner": false,
+                    "longTruckLicenseOwner": false,
+                    "eurotrailerLicenseOwner": false,
+                    "adrLicenseOwner": false,
+                    "currentLocation": "1000006",
+                    "homeBase": "1000006"
                 }
             ]
         )

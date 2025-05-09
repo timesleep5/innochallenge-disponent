@@ -30,15 +30,16 @@
 
 <div class="content-container">
     <div class="info-container">
-        <h3>~{{ selectedTruckDriver?.driverId }}</h3>
+        <h3>Driver: {{ selectedTruckDriver?.driverId ?? "- - -" }}</h3>
+        <p *ngIf="selectedTruckDriver && !filteredTransport">No Transport planned</p>
         <h4>Start:</h4>
-        <p>{{ startLocation?.name }}</p>
+        <p>{{ startLocation?.name ?? "- - -" }}</p>
         <h4>Destination:</h4>
-        <p>{{ endLocation?.name }}</p>
+        <p>{{ endLocation?.name ?? "- - -" }}</p>
         <h4>Truck:</h4>
-        <p>{{ filteredTransport?.truckId }}</p>
+        <p>{{ filteredTransport?.truckId ?? "- - -" }}</p>
         <h4>Trailer:</h4>
-        <p>{{ filteredTransport?.trailerId }}</p>
+        <p>{{ filteredTransport?.trailerId ?? "- - -" }}</p>
     </div>
     <div class="map-container">
         <div id="map"></div>

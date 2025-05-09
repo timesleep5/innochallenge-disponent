@@ -2,7 +2,7 @@ import {AfterViewInit, Component, HostBinding, OnDestroy} from '@angular/core';
 import {RouteService} from '../../shared/api/route.service';
 import {ChangeService} from '../../shared/api/change.service';
 import {Transport} from '../../shared/datatype/Transport';
-import {NgClass, NgForOf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {interval, Subscription} from 'rxjs';
 import {DriverService} from '../../shared/api/driver.service';
@@ -16,7 +16,8 @@ import * as L from 'leaflet';
     imports: [
         NgClass,
         NgForOf,
-        FormsModule
+        FormsModule,
+        NgIf
     ],
     templateUrl: './main.component.html',
     styleUrl: './main.component.css'
@@ -96,6 +97,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         this.filteredTransports = this.transports.filter(transport =>
             transport.driverId.includes(selectedDriverId));
 
+        console.log(this.filteredTransport);
         if (this.filteredTransport) {
             this.startLocation = this.locationAddresses.find(location =>
                 location.locationId === this.filteredTransport!.startLocationId
@@ -111,7 +113,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
 
 
     private initMap(): void {
-        this.map = L.map('map').setView([48.8584, 2.2945], 5); // Example: Eiffel Tower
+        this.map = L.map('map').setView([48.8584, 2.2945], 5);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
@@ -119,14 +121,15 @@ export class MainComponent implements OnDestroy, AfterViewInit {
 
         L.marker([52.5200, 13.4050])
             .addTo(this.map)
-            .bindPopup('Eiffel Tower')
+            .bindPopup('Berlin')
             .openPopup();
 
         L.marker([48.1351, 11.5820])
             .addTo(this.map)
-            .bindPopup('Tower Bridge')
+            .bindPopup('Prime Munich')
             .openPopup();
-        let token = "5b3ce3597851110001cf62486a2a1595359f4e529edaaabd04ba2b0d";
+
+        const token = "5b3ce3597851110001cf62486a2a1595359f4e529edaaabd04ba2b0d";
         const url = 'https://api.openrouteservice.org/v2/directions/driving-hgv/geojson';
         let body = {
             "coordinates": [

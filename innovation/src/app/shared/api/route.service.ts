@@ -64,8 +64,8 @@ export class RouteService {
                             "D10"
                         ],
                         "truckId": "TK18",
-                        "startLocationId": "1000001",
-                        "endLocationId": "2005089",
+                        "startLocationId": "89",
+                        "endLocationId": "34",
                         "startDateTime": "2025-04-01T06:30:00",
                         "endDateTime": "2025-04-01T09:36:00",
                         "trailerId": "TR23",
@@ -79,8 +79,8 @@ export class RouteService {
                             "D20"
                         ],
                         "truckId": "TK18",
-                        "startLocationId": "2005089",
-                        "endLocationId": "2002933",
+                        "startLocationId": "34",
+                        "endLocationId": "89",
                         "startDateTime": "2025-04-01T09:36:00",
                         "endDateTime": "2025-04-01T14:57:00",
                         "trailerId": "TR23",
