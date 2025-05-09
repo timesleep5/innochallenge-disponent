@@ -3,51 +3,46 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'any'
 })
 export class ConnectorService {
-    private url = "http://localhost:8000/";
 
     constructor(
         private http: HttpClient
     ) {
     }
 
-    setUrl(url: string) {
-        this.url = url;
-    }
-
-    add(suffix: string, body: any): Observable<any> {
+    add(url: string, body: any): Observable<any> {
         return this.http.post(
-            `${this.url}${suffix}`, body,
+            url, body,
             {headers: this.buildSendHeader()}
         );
     }
 
-    put(suffix: string, body: any): Observable<any> {
+    put(url: string, body: any): Observable<any> {
         return this.http.put(
-            `${this.url}${suffix}`, body,
+            url, body,
             {headers: this.buildSendHeader()}
         );
     }
 
-    get(suffix: string): Observable<any> {
+    get(url: string): Observable<any> {
         return this.http.get(
-            `${this.url}${suffix}`,
+            url,
             {headers: this.buildRequestHeader()}
         );
     }
 
-    update(suffix: string, body: any): Observable<any> {
+    update(url: string, body: any): Observable<any> {
         return this.http.patch(
-            `${this.url}${suffix}`, body,
+            url, body,
             {headers: this.buildSendHeader()}
         );
     }
 
-    delete(suffix: string): Observable<any> {
+    delete(url: string): Observable<any> {
         return this.http.delete(
-            `${this.url}${suffix}`,
+            url,
             {headers: this.buildDeleteHeader()}
         );
     }
