@@ -16,7 +16,7 @@ export class HelperApiService {
         this.urlPrefix = 'http://127.0.0.1:8000/v1/';
     }
 
-    public getRoutsFromTrips(trips: Trip[]): Observable<RouteResponse> {
+    public getRoutesFromTrips(trips: Trip[]): Observable<RouteResponse> {
         return this.connectorService.put(
             `${this.urlPrefix}trip/geo`,
             {trips}

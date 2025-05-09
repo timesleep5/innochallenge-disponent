@@ -32,6 +32,7 @@
     <div class="info-container">
         <h3>Driver: {{ selectedTruckDriver?.driverId ?? "- - -" }}</h3>
         <p *ngIf="selectedTruckDriver && !filteredTransport">No Transport planned</p>
+        <p *ngIf="error">Route could not be calculated</p>
         <h4>Start:</h4>
         <p>{{ startLocation?.name ?? "- - -" }}</p>
         <h4>Destination:</h4>

@@ -2,16 +2,16 @@ import {AfterViewInit, Component, HostBinding, OnDestroy} from '@angular/core';
 import {Transport} from '../../shared/datatype/Transport';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {interval, Observable, Subscription} from 'rxjs';
+import {interval, Subscription} from 'rxjs';
 import {TruckDriver} from '../../shared/datatype/TruckDriver';
 import {LocationAddress} from '../../shared/datatype/LocationAddress';
 import {RouteVisualization} from '../../shared/datatype/RouteVisualization';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 import * as L from 'leaflet';
+import {GeoJSON} from 'leaflet';
 import {MockApiService} from '../../shared/api/mock-api.service';
 import {HelperApiService} from '../../shared/api/helper-api.service';
-import {GeoJSON, latLng} from 'leaflet';
 import {CapgeminiApiService} from '../../shared/api/capgemini-api.service';
 
 
@@ -36,6 +36,7 @@ const customIcon = L.icon({
 
 export class MainComponent implements OnDestroy, AfterViewInit {
     protected changes: number = 0;
+    protected error: boolean = false;
     protected transports: Transport[] = [];
     protected filteredTransports: Transport[] = [];
     protected filteredTransport: Transport | undefined;
@@ -48,9 +49,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
 
     private map: L.Map | undefined;
     private markers: L.Marker[] = [];
-
-
-
+    private layers: L.Layer[] = [];
 
     constructor(
         private helperApiService: HelperApiService,
@@ -96,20 +95,27 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     }
 
     private updateRoute() {
-        if (!this.transports) {
+        this.error = false;
+        this.clearMap();
+        this.removeMarkers();
+        if (!this.filteredTransports) {
             return;
         }
 
-        this.helperApiService.getRoutsFromTrips(this.transports.map(transport => ({
+        this.helperApiService.getRoutesFromTrips(this.filteredTransports.map(transport => ({
             startLocationId: Number(transport.startLocationId),
             endLocationId: Number(transport.endLocationId)
-        }))).subscribe((response) => {
-            // @ts-ignore TODO check if ok
-            const route = L.geoJson(response, {
-                style: {color: 'blue', weight: 4}
-            }).addTo(this.map!);
+        }))).subscribe((routePlanning: RouteVisualization) => {
+            if (routePlanning.pins.length === 0) {
+                return;
+            }
+            if (routePlanning.route && (routePlanning.route as any).error) {
+                console.log('Error in route planning:', (routePlanning.route as any).error);
+                this.error = true;
+                return;
+            }
 
-            this.map!.fitBounds(route.getBounds());
+            this.plotRouteDetails(routePlanning);
         });
     }
 
@@ -138,66 +144,35 @@ export class MainComponent implements OnDestroy, AfterViewInit {
 
         if (this.filteredTransport) {
             this.startLocation = this.locationAddresses.find(location =>
-                location.locationId === this.filteredTransport!.startLocationId
+                location.locationId == this.filteredTransport!.startLocationId
             );
             this.endLocation = this.locationAddresses.find(location =>
-                location.locationId === this.filteredTransport!.endLocationId
+                location.locationId == this.filteredTransport!.endLocationId
             );
-
-            this.updateRoute();
         } else {
             this.startLocation = undefined;
             this.endLocation = undefined;
         }
 
-        let locations = this.filteredTransports.map(t => ({
-            startLocationId: t.startLocationId,
-            endLocationId: t.endLocationId
-        }));
-
-
-
-        this.requestRouteDetails(locations).subscribe({
-            next: (routePlanning: RouteVisualization) => {
-                console.log('Route planning data:', routePlanning);
-
-                // plot the coordinates in the map
-                this.plotRouteDetails(routePlanning);
-            },
-            error: (err) => {
-                console.error('Failed to fetch map details', err);
-                return;
-            }
-        });
-
-
-        let startCoordinates = latLng(40.7128, -74.0060);
-        let endCoordinates = latLng(34.0522, -118.2437);
-
-        this.initMarker(this.startLocation, startCoordinates);
-        this.initMarker(this.endLocation, endCoordinates);
-    }
-
-    private requestRouteDetails(locations: { startLocationId: string, endLocationId: string }[]): Observable<RouteVisualization> {
-        const url = 'http://localhost:8000/v1/trip/geo'; // adjust the port/path to match your backend
-        const body = { trips: locations };
-
-        return this.http.post<RouteVisualization>(url, body);
+        this.updateRoute();
     }
 
     private plotRouteDetails(routeDetails: RouteVisualization): void {
         for (let pin of routeDetails.pins) {
             this.initMarker(this.locationAddresses[pin.id], [pin.latitude, pin.longitude]);
         }
+
         const route = L.geoJSON(routeDetails.route as GeoJSON.GeoJsonObject, {
-            style: { color: 'blue', weight: 4 }
+            style: {color: 'blue', weight: 4}
         }).addTo(this.map!);
+
+        this.layers.push(route);
 
         this.map!.fitBounds(route.getBounds());
     }
 
     private startRandomChangeIncrement() {
-        this.randomChangeSubscription = interval(200).subscribe(() => {
+        this.randomChangeSubscription = interval(1000).subscribe(() => {
             if (Math.random() < .05) {
                 this.changes += Math.floor(Math.random() * 2);
             }
@@ -246,10 +221,18 @@ export class MainComponent implements OnDestroy, AfterViewInit {
             }
         }
     }
+
     private removeMarkers(): void {
         this.markers.forEach(marker => {
             this.map?.removeLayer(marker);
         });
         this.markers = [];
+    }
+
+    private clearMap(): void {
+        this.layers.forEach(layer => {
+            this.map?.removeLayer(layer);
+        });
+        this.layers = [];
     }
 }
