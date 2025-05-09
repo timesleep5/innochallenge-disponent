@@ -2,14 +2,16 @@ import {AfterViewInit, Component, HostBinding, OnDestroy} from '@angular/core';
 import {Transport} from '../../shared/datatype/Transport';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {interval, Subscription} from 'rxjs';
+import {interval, Observable, Subscription} from 'rxjs';
 import {TruckDriver} from '../../shared/datatype/TruckDriver';
 import {LocationAddress} from '../../shared/datatype/LocationAddress';
+import {RouteVisualization} from '../../shared/datatype/RouteVisualization';
+import { HttpClient } from '@angular/common/http';
 
 import * as L from 'leaflet';
 import {MockApiService} from '../../shared/api/mock-api.service';
 import {HelperApiService} from '../../shared/api/helper-api.service';
-import {latLng} from 'leaflet';
+import {GeoJSON, latLng} from 'leaflet';
 
 
 const customIcon = L.icon({
@@ -51,7 +53,8 @@ export class MainComponent implements OnDestroy, AfterViewInit {
 
     constructor(
         private mockService: MockApiService,
-        private helperApiService: HelperApiService
+        private helperApiService: HelperApiService,
+        private http: HttpClient
     ) {
     }
 
@@ -145,11 +148,50 @@ export class MainComponent implements OnDestroy, AfterViewInit {
             this.endLocation = undefined;
         }
 
+        let locations = this.filteredTransports.map(t => ({
+            startLocationId: t.startLocationId,
+            endLocationId: t.endLocationId
+        }));
+
+
+
+        this.requestRouteDetails(locations).subscribe({
+            next: (routePlanning: RouteVisualization) => {
+                console.log('Route planning data:', routePlanning);
+
+                // plot the coordinates in the map
+                this.plotRouteDetails(routePlanning);
+            },
+            error: (err) => {
+                console.error('Failed to fetch map details', err);
+                return;
+            }
+        });
+
+
         let startCoordinates = latLng(40.7128, -74.0060);
         let endCoordinates = latLng(34.0522, -118.2437);
 
         this.initMarker(this.startLocation, startCoordinates);
         this.initMarker(this.endLocation, endCoordinates);
+    }
+
+    private requestRouteDetails(locations: { startLocationId: string, endLocationId: string }[]): Observable<RouteVisualization> {
+        const url = 'http://localhost:8000/v1/trip/geo'; // adjust the port/path to match your backend
+        const body = { trips: locations };
+
+        return this.http.post<RouteVisualization>(url, body);
+    }
+
+    private plotRouteDetails(routeDetails: RouteVisualization): void {
+        for (let pin of routeDetails.pins) {
+            this.initMarker(this.locationAddresses[pin.id], [pin.latitude, pin.longitude]);
+        }
+        const route = L.geoJSON(routeDetails.route as GeoJSON.GeoJsonObject, {
+            style: { color: 'blue', weight: 4 }
+        }).addTo(this.map!);
+
+        this.map!.fitBounds(route.getBounds());
     }
 
     private startRandomChangeIncrement() {
