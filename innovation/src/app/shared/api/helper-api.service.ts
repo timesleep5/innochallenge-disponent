@@ -8,16 +8,17 @@ import {Trip} from '../datatype/Trip';
     providedIn: 'root'
 })
 export class HelperApiService {
+    private urlPrefix: string = "";
 
     constructor(
         private connectorService: ConnectorService
     ) {
-        this.connectorService.setUrl('http://korbi-der-huan:8000/')
+        this.urlPrefix = 'http://127.0.0.1:8000/v1/';
     }
 
     public getRoutsFromTrips(trips: Trip[]): Observable<RouteResponse> {
         return this.connectorService.put(
-            "getRouteFromTrips",
+            `${this.urlPrefix}trip/geo`,
             {trips}
         );
     }

@@ -9,27 +9,34 @@ import {TruckDriver} from '../datatype/TruckDriver';
     providedIn: 'root'
 })
 export class CapgeminiApiService {
+    private urlPrefix: string = "";
 
     constructor(
         private connectorService: ConnectorService
     ) {
-        this.connectorService.setUrl('https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/' + 'api/v1/')
+        this.urlPrefix = 'https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/' + 'api/v1/';
+    }
+
+    public getRoute(): Observable<OptimizeResponse> {
+        return this.connectorService.get(
+            `${this.urlPrefix}last-routes`
+        );
     }
 
     public optimizeRoute(): Observable<OptimizeResponse> {
         return this.connectorService.add(
-            "optimize",
+            `${this.urlPrefix}optimize`,
             {'optimizationGoal': 'TRAVEL_DISTANCE', 'optimizationAlgorithm': 'SIMPLE_GREEDY_VRP_OPTIMIZER'}
         );
     }
 
     public getDrivers(): Observable<TruckDriver[]> {
         return this.connectorService.get(
-            "truck-drivers"
+            `${this.urlPrefix}truck-drivers`
         );
     }
 
     public getLocationAddress(): Observable<LocationAddress[]> {
-        return this.connectorService.get("location-addresses");
+        return this.connectorService.get(`${this.urlPrefix}location-addresses`);
     }
 }

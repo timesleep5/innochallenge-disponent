@@ -10,6 +10,7 @@ import * as L from 'leaflet';
 import {MockApiService} from '../../shared/api/mock-api.service';
 import {HelperApiService} from '../../shared/api/helper-api.service';
 import {latLng} from 'leaflet';
+import {CapgeminiApiService} from '../../shared/api/capgemini-api.service';
 
 
 const customIcon = L.icon({
@@ -50,7 +51,8 @@ export class MainComponent implements OnDestroy, AfterViewInit {
 
 
     constructor(
-        private mockService: MockApiService,
+        private mockApiService: MockApiService,
+        private apiService: CapgeminiApiService,
         private helperApiService: HelperApiService
     ) {
     }
@@ -61,20 +63,20 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
-        this.mockService.getChanges().subscribe((changes) => {
+        this.mockApiService.getChanges().subscribe((changes) => {
             this.changes = changes;
         });
-        this.mockService.optimizeRoute().subscribe((response) => {
+        this.apiService.getRoute().subscribe((response) => {
             this.transports = response.transportPlan.transports.sort(
                 (a, b) => a.startDateTime.localeCompare(b.startDateTime)
             );
         });
-        this.mockService.getDrivers().subscribe((response) => {
+        this.apiService.getDrivers().subscribe((response) => {
             this.truckDrivers = response.sort(
                 (a, b) => a.lastName.localeCompare(b.lastName)
             );
         });
-        this.mockService.getLocationAddress().subscribe((response) => {
+        this.apiService.getLocationAddress().subscribe((response) => {
             this.locationAddresses = response;
         });
         this.startRandomChangeIncrement();
@@ -109,7 +111,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     }
 
     protected onClick() {
-        this.mockService.optimizeRoute().subscribe((response) => {
+        this.apiService.optimizeRoute().subscribe((response) => {
             this.transports = response.transportPlan.transports;
 
             if (this.selectedTruckDriver) {
