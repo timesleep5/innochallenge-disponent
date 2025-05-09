@@ -12,7 +12,7 @@ export class HelperApiService {
     constructor(
         private connectorService: ConnectorService
     ) {
-        this.connectorService.setUrl('http://korbi-der-huan:8000')
+        this.connectorService.setUrl('http://korbi-der-huan:8000/')
     }
 
     public getRoutsFromTrips(trips: Coordinate[]): Observable<RouteResponse> {
