@@ -31,9 +31,11 @@ export class LeafletTestComponent implements AfterViewInit {
       transport.driverId.includes(driverId)); // TODO why is drivers a list in transport
 
     let locations = driversTransports.map(t => ({
-      startLocationId: t.startLocationId,
-      endLocationId: t.endLocationId
+      startLocationId: Number(t.startLocationId),
+      endLocationId: Number(t.endLocationId)
     }));
+
+    locations = [{ startLocationId: 89, endLocationId: 261 }]
 
     // request pin coordinates and stuff from backend
     this.requestRouteDetails(locations).subscribe({
@@ -51,11 +53,13 @@ export class LeafletTestComponent implements AfterViewInit {
 
   }
 
-  private requestRouteDetails(locations: { startLocationId: string, endLocationId: string }[]): Observable<RouteVisualization> {
-    const url = 'http://localhost:3000/map-details'; // adjust the port/path to match your backend
-    const body = { trips: locations };
+  private requestRouteDetails(locations: { startLocationId: Number, endLocationId: Number }[]): Observable<RouteVisualization> {
+    const url = 'http://localhost:8000/v1/trip/geo';
 
-    return this.http.post<RouteVisualization>(url, body);
+    const body = { trips: locations };
+    console.log(locations);
+
+    return this.http.put<RouteVisualization>(url, body);
   }
 
   private plotRouteDetails(routeDetails: RouteVisualization): void {
@@ -64,18 +68,10 @@ export class LeafletTestComponent implements AfterViewInit {
         addTo(this.map!)
         .bindPopup(""); // TODO Add Details
     }
-    const geoJsonLine: Feature<LineString> = {
-      type: "Feature",
-      geometry: {
-        type: "LineString",
-        coordinates: routeDetails.route.map(coord => [coord.longitude, coord.latitude])
-      },
-      properties: {}
-    };
-    const route = L.geoJSON(geoJsonLine, {
+    const route = L.geoJSON(routeDetails.route as GeoJSON.GeoJsonObject, {
       style: { color: 'blue', weight: 4 }
     }).addTo(this.map!);
-    
+
     this.map!.fitBounds(route.getBounds());
   }
 
