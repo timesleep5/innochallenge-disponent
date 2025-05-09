@@ -9,6 +9,15 @@ import {LocationAddress} from '../../shared/datatype/LocationAddress';
 import * as L from 'leaflet';
 import {MockApiService} from '../../shared/api/mock-api.service';
 import {HelperApiService} from '../../shared/api/helper-api.service';
+import {latLng} from 'leaflet';
+
+
+const customIcon = L.icon({
+    iconUrl: '/location_on.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 40],
+    popupAnchor: [0, -35]
+});
 
 @Component({
     selector: 'app-main',
@@ -21,6 +30,7 @@ import {HelperApiService} from '../../shared/api/helper-api.service';
     templateUrl: './main.component.html',
     styleUrl: './main.component.css'
 })
+
 export class MainComponent implements OnDestroy, AfterViewInit {
     protected changes: number = 0;
     protected transports: Transport[] = [];
@@ -34,6 +44,10 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     private randomChangeSubscription: Subscription | null = null;
 
     private map: L.Map | undefined;
+    private markers: L.Marker[] = [];
+
+
+
 
     constructor(
         private mockService: MockApiService,
@@ -130,6 +144,12 @@ export class MainComponent implements OnDestroy, AfterViewInit {
             this.startLocation = undefined;
             this.endLocation = undefined;
         }
+
+        let startCoordinates = latLng(40.7128, -74.0060);
+        let endCoordinates = latLng(34.0522, -118.2437);
+
+        this.initMarker(this.startLocation, startCoordinates);
+        this.initMarker(this.endLocation, endCoordinates);
     }
 
     private startRandomChangeIncrement() {
@@ -143,6 +163,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     private initMap(): void {
         this.map = L.map('map').setView([48.8584, 2.2945], 5);
 
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(this.map);
@@ -155,5 +176,36 @@ export class MainComponent implements OnDestroy, AfterViewInit {
                 [11.5820, 48.1351]   // Munich [lng, lat]
             ]
         }
+    }
+
+    private initMarker(location: LocationAddress | undefined, coordinates: L.LatLngExpression): void {
+        let popupContent =
+            `<div class="popup-content">
+                <h3>Location Details</h3>
+                <p><b>Country:</b> ${location?.country}</p>
+                <p><b>Area code:</b> ${location?.areaCode}</p>
+                <p><b>City:</b> ${location?.city}</p>
+                <p><b>Address:</b> ${location?.address}</p>
+            </div>`;
+
+        if (this.map) {
+            if (location) {
+                let marker = L.marker(coordinates, {icon: customIcon})
+                marker
+                    .addTo(this.map)
+                    .bindPopup(popupContent)
+                    .openPopup()
+
+                this.markers.push(marker);
+            } else {
+                this.removeMarkers()
+            }
+        }
+    }
+    private removeMarkers(): void {
+        this.markers.forEach(marker => {
+            this.map?.removeLayer(marker);
+        });
+        this.markers = [];
     }
 }
