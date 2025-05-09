@@ -1,13 +1,13 @@
 import {TestBed} from '@angular/core/testing';
 
-import {ChangeService} from './change.service';
+import {CapgeminiApiService} from './capgemini-api.service';
 
-describe('ChangeService', () => {
-    let service: ChangeService;
+describe('CapgeminiApiService', () => {
+    let service: CapgeminiApiService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(ChangeService);
+        service = TestBed.inject(CapgeminiApiService);
     });
 
     it('should be created', () => {
