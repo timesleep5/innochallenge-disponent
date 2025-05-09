@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ConnectorService} from './connector.service';
 import {Observable, of} from 'rxjs';
 import {OptimizeResponse} from '../datatype/OptimizeResponse';
+import {LocationAddress} from '../datatype/LocationAddress';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +19,31 @@ export class RouteService {
             "optimize",
             {'optimizationGoal': 'TRAVEL_DISTANCE', 'optimizationAlgorithm': 'SIMPLE_GREEDY_VRP_OPTIMIZER'}
         );
+    }
+
+    public getLocationAddress(): Observable<LocationAddress[]> {
+        return this.connectorService.get("location-addresses");
+    }
+
+    public mockGetLocationAddress(): Observable<LocationAddress[]> {
+        return of([
+            {
+                "locationId": "89",
+                "name": "Müller GmbH",
+                "address": "Eichenstraße 33",
+                "areaCode": "71063",
+                "city": "Sindelfingen",
+                "country": "DEU"
+            },
+            {
+                "locationId": "34",
+                "name": "Maxidax AG",
+                "address": "Am Moorloch 33",
+                "areaCode": "78166",
+                "city": "Donaueschingen",
+                "country": "DEU"
+            }
+        ])
     }
 
     public mockOptimizeRoute(): Observable<OptimizeResponse> {
