@@ -3,7 +3,9 @@ select {
     border: solid 2px var(--frame);
     border-radius: 4px;
     padding: 0 5px 0 5px;
+    margin-top: 5px;
     box-shadow: none;
+    width: 100%;
 }
 
 label {
@@ -76,7 +78,8 @@ h4 {
 }
 
 .space {
-    width: 20vw;
+    width: 10vw;
+    height: 20px;
 }
 
 
