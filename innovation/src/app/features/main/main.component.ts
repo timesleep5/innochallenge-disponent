@@ -191,15 +191,6 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(this.map);
-
-        const token = "5b3ce3597851110001cf62486a2a1595359f4e529edaaabd04ba2b0d";
-        const url = 'https://api.openrouteservice.org/v2/directions/driving-hgv/geojson';
-        let body = {
-            "coordinates": [
-                [13.4050, 52.5200],  // Berlin [lng, lat]
-                [11.5820, 48.1351]   // Munich [lng, lat]
-            ]
-        }
     }
 
     private initMarker(location: LocationAddress | undefined, coordinates: L.LatLngExpression, stopNr: number): void {
