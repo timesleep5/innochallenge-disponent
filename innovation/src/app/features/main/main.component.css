@@ -1,6 +1,6 @@
 select {
     font-size: 16px;
-    border: solid 2px rgba(68, 68, 68, 0.2);
+    border: solid 2px var(--frame);
     border-radius: 4px;
     padding: 0 5px 0 5px;
     box-shadow: none;

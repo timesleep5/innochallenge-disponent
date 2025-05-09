@@ -5,6 +5,7 @@
     --secondary-text: #172549;
     --primary-color: #cbe6fd;
     --accent-color: #f6f4e7;
+    --frame: rgba(68, 68, 68, 0.2);
 
     --good: #84dc00;
     --bad: #d52a2a;
@@ -21,6 +22,7 @@
     --secondary-text: #ffedd0;
     --primary-color: #497dc2;
     --accent-color: #304885;
+    --frame: rgba(215, 215, 215, 0.2);
 
     --good: #39b00a;
     --bad: #c50000;
