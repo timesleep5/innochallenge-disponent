@@ -1,7 +1,28 @@
-#all {
-    width: 50vw;
+img {
+    height: 60vh;
 }
 
-#tj {
-    height: 28.1vw;
+.container {
+    margin-bottom: 5vh;
+}
+
+.container h1 {
+    text-align: center;
+}
+
+.details-container {
+    margin-bottom: 20px;
+}
+
+.team-members {
+    margin: 20px 0;
+}
+
+.team-members a:hover {
+    cursor: pointer;
+}
+
+.team-members .ul {
+    margin-top: 10px;
+    padding-left: 50px;
 }
