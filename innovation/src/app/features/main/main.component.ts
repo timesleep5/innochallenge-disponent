@@ -22,6 +22,7 @@ import {LocationAddress} from '../../shared/datatype/LocationAddress';
 export class MainComponent implements OnDestroy {
     protected changes: number = 0;
     protected transports: Transport[] = [];
+    protected filteredTransports: Transport[] = [];
     protected filteredTransport: Transport | undefined;
     protected truckDrivers: TruckDriver[] = [];
     private locationAddresses: LocationAddress[] = [];
@@ -58,7 +59,7 @@ export class MainComponent implements OnDestroy {
         this.startRandomChangeIncrement();
     }
 
-    protected ngOnDestroy() {
+    ngOnDestroy() {
         if (this.randomChangeSubscription) {
             this.randomChangeSubscription.unsubscribe();
         }
@@ -84,6 +85,8 @@ export class MainComponent implements OnDestroy {
         this.filteredTransport = this.transports.find(transport =>
             transport.driverId.includes(selectedDriverId)
         );
+        this.filteredTransports = this.transports.filter(transport =>
+            transport.driverId.includes(selectedDriverId));
 
         if (this.filteredTransport) {
             this.startLocation = this.locationAddresses.find(location =>
