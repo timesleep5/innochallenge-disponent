@@ -198,11 +198,11 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         let popupContent =
             `<div class="popup-content">
                 <h3>Location Details</h3>
-                <p><b>Stop Nr:</b> ${stopNr}</p>
-                <p><b>Country:</b> ${location?.country}</p>
-                <p><b>Area code:</b> ${location?.areaCode}</p>
-                <p><b>City:</b> ${location?.city}</p>
-                <p><b>Address:</b> ${location?.address}</p>
+                <p><b>📍&#9; Stop Nr:</b> ${stopNr}</p>
+                <p><b>🏳&#9;  Country:</b> ${location?.country}</p>
+                <p><b>📮&#9; Area code:</b> ${location?.areaCode}</p>
+                <p><b>🏙&#9;  City:</b> ${location?.city}</p>
+                <p><b>📬&#9; Address:</b> ${location?.address}</p>
             </div>`;
 
         if (this.map) {
