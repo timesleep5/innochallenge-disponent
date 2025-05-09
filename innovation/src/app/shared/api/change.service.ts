@@ -9,7 +9,7 @@ export class ChangeService {
     constructor() {
     }
 
-    public getChanges(): Observable<any> {
-        return of(5);
+    public mockGetChanges(): Observable<any> {
+        return of(12);
     }
 }
