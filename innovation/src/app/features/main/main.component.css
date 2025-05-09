@@ -67,6 +67,45 @@ button {
     font-weight: bold;
 }
 
-#space {
+.space {
     width: 20vw;
 }
+
+
+.content-container {
+    background-color: var(--accent-color);
+    display: flex;
+    padding: 50px;
+    border-radius: 20px;
+}
+
+
+.info-container {
+    height: 400px;
+    width: 20vw;
+    padding: 20px;
+    margin: 20px 100px 20px 50px;
+    background-color: var(--base-color);
+    border: 2px solid var(--overlay);
+    border-radius: 10px;
+}
+
+.map-container {
+    height: 250px;
+    width: 200px;
+    margin: 20px 0;
+}
+
+h4 {
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+
+#map{
+    height: 440px;
+    width: 50vw;
+}
+
+
+
