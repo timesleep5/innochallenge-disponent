@@ -59,11 +59,6 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     ) {
     }
 
-    @HostBinding('style.--animation-duration')
-    get animationDuration(): string {
-        return `${5000 / this.changes}ms`;
-    }
-
     ngOnInit() {
         this.mockApiService.getChanges().subscribe((changes) => {
             this.changes = changes;

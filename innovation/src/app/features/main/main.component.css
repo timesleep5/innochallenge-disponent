@@ -51,7 +51,7 @@ h4 {
 }
 
 .blink {
-    animation: blink var(--animation-duration) infinite;
+    animation: blink 2s infinite;
 }
 
 @keyframes blink {
