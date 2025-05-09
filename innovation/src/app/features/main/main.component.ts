@@ -67,11 +67,19 @@ export class MainComponent implements OnDestroy, AfterViewInit {
             this.transports = response.transportPlan.transports.sort(
                 (a, b) => a.startDateTime.localeCompare(b.startDateTime)
             );
-        });
-        this.apiService.getDrivers().subscribe((response) => {
-            this.truckDrivers = response.sort(
-                (a, b) => a.lastName.localeCompare(b.lastName)
-            );
+            this.apiService.getDrivers().subscribe((response) => {
+                this.truckDrivers = response.map((driver) => {
+                    const isInTransport = this.transports.some((transport) =>
+                        transport.driverId.includes(driver.driverId)
+                    );
+                    return {
+                        ...driver,
+                        lastName: isInTransport ? `• ${driver.lastName}` : driver.lastName,
+                    };
+                }).sort(
+                    (a, b) => a.lastName.localeCompare(b.lastName)
+                );
+            });
         });
         this.apiService.getLocationAddress().subscribe((response) => {
             this.locationAddresses = response;
@@ -169,7 +177,7 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     }
 
     private startRandomChangeIncrement() {
-        this.randomChangeSubscription = interval(1000).subscribe(() => {
+        this.randomChangeSubscription = interval(10000).subscribe(() => {
             if (Math.random() < .05) {
                 this.changes += Math.floor(Math.random() * 2);
             }

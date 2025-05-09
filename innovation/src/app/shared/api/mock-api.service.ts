@@ -13,7 +13,7 @@ export class MockApiService {
     }
 
     public getChanges(): Observable<any> {
-        return of(12);
+        return of(6);
     }
 
     public optimizeRoute(): Observable<OptimizeResponse> {
