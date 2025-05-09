@@ -1,15 +1,13 @@
 import {AfterViewInit, Component, HostBinding, OnDestroy} from '@angular/core';
-import {RouteService} from '../../shared/api/route.service';
-import {ChangeService} from '../../shared/api/change.service';
 import {Transport} from '../../shared/datatype/Transport';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {interval, Subscription} from 'rxjs';
-import {DriverService} from '../../shared/api/driver.service';
 import {TruckDriver} from '../../shared/datatype/TruckDriver';
 import {LocationAddress} from '../../shared/datatype/LocationAddress';
 
 import * as L from 'leaflet';
+import {MockApiService} from '../../shared/api/mock-api.service';
 
 @Component({
     selector: 'app-main',
@@ -28,18 +26,16 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     protected filteredTransports: Transport[] = [];
     protected filteredTransport: Transport | undefined;
     protected truckDrivers: TruckDriver[] = [];
-    private locationAddresses: LocationAddress[] = [];
     protected selectedTruckDriver: TruckDriver | undefined;
     protected startLocation: LocationAddress | undefined;
     protected endLocation: LocationAddress | undefined;
+    private locationAddresses: LocationAddress[] = [];
     private randomChangeSubscription: Subscription | null = null;
 
     private map: L.Map | undefined;
 
     constructor(
-        private changeService: ChangeService,
-        private driverService: DriverService,
-        private routeService: RouteService,
+        private mockService: MockApiService,
     ) {
     }
 
@@ -49,16 +45,16 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
-        this.changeService.mockGetChanges().subscribe((changes) => {
+        this.mockService.getChanges().subscribe((changes) => {
             this.changes = changes;
         });
-        this.routeService.mockOptimizeRoute().subscribe((response) => {
+        this.mockService.optimizeRoute().subscribe((response) => {
             this.transports = response.transportPlan.transports;
         });
-        this.driverService.mockGetDrivers().subscribe((response) => {
+        this.mockService.getDrivers().subscribe((response) => {
             this.truckDrivers = response;
         });
-        this.routeService.mockGetLocationAddress().subscribe((response) => {
+        this.mockService.getLocationAddress().subscribe((response) => {
             this.locationAddresses = response;
         });
         this.startRandomChangeIncrement();
@@ -75,18 +71,10 @@ export class MainComponent implements OnDestroy, AfterViewInit {
     }
 
     protected onClick() {
-        this.routeService.mockOptimizeRoute().subscribe((response) => {
+        this.mockService.optimizeRoute().subscribe((response) => {
             this.transports = response.transportPlan.transports;
         });
         this.changes = 0;
-    }
-
-    private startRandomChangeIncrement() {
-        this.randomChangeSubscription = interval(200).subscribe(() => {
-            if (Math.random() < .05) {
-                this.changes += Math.floor(Math.random() * 2);
-            }
-        });
     }
 
     protected onSelectTruckDriver() {
@@ -97,7 +85,6 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         this.filteredTransports = this.transports.filter(transport =>
             transport.driverId.includes(selectedDriverId));
 
-        console.log(this.filteredTransport);
         if (this.filteredTransport) {
             this.startLocation = this.locationAddresses.find(location =>
                 location.locationId === this.filteredTransport!.startLocationId
@@ -111,6 +98,13 @@ export class MainComponent implements OnDestroy, AfterViewInit {
         }
     }
 
+    private startRandomChangeIncrement() {
+        this.randomChangeSubscription = interval(200).subscribe(() => {
+            if (Math.random() < .05) {
+                this.changes += Math.floor(Math.random() * 2);
+            }
+        });
+    }
 
     private initMap(): void {
         this.map = L.map('map').setView([48.8584, 2.2945], 5);

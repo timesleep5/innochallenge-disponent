@@ -6,23 +6,26 @@ import {Observable} from 'rxjs';
     providedIn: 'root'
 })
 export class ConnectorService {
-    private url = 'https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/' + 'api/v1/';
+    private url = "http://localhost:8000/";
 
     constructor(
         private http: HttpClient
     ) {
     }
 
-    optimizeCall(): Observable<any> {
-        return this.http.post(
-            'https://optimaloptimizer.thankfulbeach-22a876ac.westus2.azurecontainerapps.io/api/v1/optimize',
-            {'optimizationGoal': 'TRAVEL_DISTANCE', 'optimizationAlgorithm': 'SIMPLE_GREEDY_VRP_OPTIMIZER'},
-            {headers: new HttpHeaders().set('accept', '*/*').set('Content-Type', 'application/json')}
-        );
+    setUrl(url: string) {
+        this.url = url;
     }
 
     add(suffix: string, body: any): Observable<any> {
         return this.http.post(
+            `${this.url}${suffix}`, body,
+            {headers: this.buildSendHeader()}
+        );
+    }
+
+    put(suffix: string, body: any): Observable<any> {
+        return this.http.put(
             `${this.url}${suffix}`, body,
             {headers: this.buildSendHeader()}
         );
